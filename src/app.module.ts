@@ -9,6 +9,8 @@ import { Doctor } from './frameworks/data-services/mysql/entities/doctor.model';
 import { DoctorController } from './controllers/doctor/doctor.controller';
 import { DoctorUseCase } from './use-cases/doctor/doctor.use-case';
 import { DoctorUseCaseModule } from './use-cases/doctor/doctor.use-cases.module';
+import { AuthModule } from './auth/auth.module';
+import { AuthController } from './auth/auth.controller';
 
 @Module({
   imports: [
@@ -25,11 +27,13 @@ import { DoctorUseCaseModule } from './use-cases/doctor/doctor.use-cases.module'
     }),
     PatientUseCaseModule,
     DoctorUseCaseModule,
+    AuthModule,
   ],
   controllers: [
     AppController,
     PatientController,
     DoctorController,
+    AuthController,
   ],
   providers: [],
 })

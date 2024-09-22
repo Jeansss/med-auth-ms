@@ -14,4 +14,14 @@ export class DoctorRepositoryImpl extends MySqlGenericRepository<Doctor> {
             });
     }
 
+    getDoctorByEmail(doctorEmail: string) {
+        return this._repository
+            .find({
+                where: {
+                    email: doctorEmail
+                }
+            });
+    }
+
+
 }

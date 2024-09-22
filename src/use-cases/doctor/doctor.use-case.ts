@@ -34,7 +34,7 @@ export class DoctorUseCase {
     }
 
     async createDoctor(doctorDTO: DoctorDTO): Promise<Doctor> {
-        const newDoctor = this.doctorFactoryService.createNewDoctor(doctorDTO);
+        const newDoctor = await this.doctorFactoryService.createNewDoctor(doctorDTO);
         return this.dataServices.doctors.create(newDoctor);
     }
 }

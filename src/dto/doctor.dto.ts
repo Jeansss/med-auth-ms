@@ -23,4 +23,8 @@ export class DoctorDTO {
   @IsString()
   @IsNotEmpty()
   readonly specialty: string;
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  readonly password: string;
 }

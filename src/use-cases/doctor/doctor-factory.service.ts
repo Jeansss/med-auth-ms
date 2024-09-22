@@ -1,17 +1,22 @@
 import { Injectable } from "@nestjs/common";
 import { DoctorDTO } from "src/dto/doctor.dto";
 import { Doctor } from "src/frameworks/data-services/mysql/entities/doctor.model";
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class DoctorFactoryService {
 
-    createNewDoctor(doctorDTO: DoctorDTO) {
+    async createNewDoctor(doctorDTO: DoctorDTO) {
+        const hashedPassword = await bcrypt.hash(doctorDTO.password, 10);
+
         const newDoctor = new Doctor();
         newDoctor.cpf = doctorDTO.cpf;
         newDoctor.email = doctorDTO.email;
         newDoctor.name = doctorDTO.name;
         newDoctor.crm = doctorDTO.crm;
         newDoctor.specialty = doctorDTO.specialty;
+        newDoctor.password = hashedPassword;
+        newDoctor.role = 'doctor';
     
         return newDoctor;
     }

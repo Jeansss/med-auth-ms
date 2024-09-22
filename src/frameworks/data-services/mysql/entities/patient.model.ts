@@ -12,4 +12,8 @@ export class Patient {
     email: string;
     @Column()
     status: string;
+    @Column()
+    password: string;
+    @Column()
+    role: string;
 }

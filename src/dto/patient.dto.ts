@@ -15,4 +15,8 @@ export class PatientDTO {
   @IsString()
   @IsNotEmpty()
   readonly email: string;
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  readonly password: string;
 }

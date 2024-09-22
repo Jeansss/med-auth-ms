@@ -6,12 +6,13 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Doctor } from './entities/doctor.model';
 import { MySqlGenericRepository } from './external/mysql-generic-repository';
+import { PatientRepositoryImpl } from './gateways/patient.repository';
 
 @Injectable()
 export class MySqlDataServices
   implements IDataServices<MySqlGenericRepository<Doctor | Patient>>, OnApplicationBootstrap {
   doctors: DoctorRepositoryImpl;
-  patients: MySqlGenericRepository<Patient>;
+  patients: PatientRepositoryImpl;
 
   constructor(
     @InjectRepository(Doctor)
@@ -23,6 +24,6 @@ export class MySqlDataServices
 
   onApplicationBootstrap() {
     this.doctors = new DoctorRepositoryImpl(this.DoctorRepository);
-    this.patients = new MySqlGenericRepository<Patient>(this.PatientRepository);
+    this.patients = new PatientRepositoryImpl(this.PatientRepository);
   }
 }

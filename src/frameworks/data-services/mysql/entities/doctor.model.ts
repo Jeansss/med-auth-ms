@@ -14,4 +14,8 @@ export class Doctor {
     email: string;
     @Column()
     specialty: string;
+    @Column()
+    password: string;
+    @Column()
+    role: string;
 }

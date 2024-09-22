@@ -5,11 +5,12 @@ import { PatientDTO } from "src/dto/patient.dto";
 import { PatientFactoryService } from "./patient-factory.service";
 import { PatientStatus } from "src/enum/patient.enum";
 import { MySqlGenericRepository } from "src/frameworks/data-services/mysql/external/mysql-generic-repository";
+import { PatientRepositoryImpl } from "src/frameworks/data-services/mysql/gateways/patient.repository";
 
 @Injectable()
 export class PatientUseCase {
 
-    constructor(private dataServices: IDataServices<MySqlGenericRepository<Patient>>, private patientFactoryService: PatientFactoryService) { }
+    constructor(private dataServices: IDataServices<PatientRepositoryImpl>, private patientFactoryService: PatientFactoryService) { }
 
     async getAllPatients(): Promise<Patient[]> {
         return await this.dataServices.patients.getAll();
@@ -25,7 +26,7 @@ export class PatientUseCase {
     }
 
     async createPatient(patientDTO: PatientDTO): Promise<Patient> {
-        const newPatient = this.patientFactoryService.createNewPatient(patientDTO);
+        const newPatient = await this.patientFactoryService.createNewPatient(patientDTO);
         newPatient.status = PatientStatus.ACTIVE;
         return this.dataServices.patients.create(newPatient);
     }

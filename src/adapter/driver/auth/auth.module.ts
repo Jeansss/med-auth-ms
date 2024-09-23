@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { AuthUseCase } from '../../../core/application/use-cases/auth/auth.use-case';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
-import { MySqlDataServicesModule } from 'src/frameworks/data-services/mysql/mysql-data-services.module';
+import { MySqlDataServicesModule } from 'src/adapter/driven/database/mysql-data-services.module';
 
 @Module({
   imports: [
@@ -12,9 +12,9 @@ import { MySqlDataServicesModule } from 'src/frameworks/data-services/mysql/mysq
       secret: 'SECRET_KEY',
       signOptions: { expiresIn: '60m' },
     }),
-    MySqlDataServicesModule
+    MySqlDataServicesModule,
   ],
-  providers: [AuthService, JwtStrategy],
-  exports: [AuthService],
+  providers: [AuthUseCase, JwtStrategy],
+  exports: [AuthUseCase],
 })
 export class AuthModule {}

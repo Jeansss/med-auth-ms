@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Param, Post, Put, Delete, HttpStatus, HttpCode, Logger, Query, NotFoundException, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Roles } from 'src/auth/decorator-roles';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/roles-guard';
-import { DoctorDTO } from 'src/dto/doctor.dto';
-import { Doctor } from 'src/frameworks/data-services/mysql/entities/doctor.model';
-import { DoctorUseCase } from 'src/use-cases/doctor/doctor.use-case';
+import { Roles } from 'src/adapter/driver/auth/decorator-roles';
+import { JwtAuthGuard } from 'src/adapter/driver/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/adapter/driver/auth/roles-guard';
+import { DoctorDTO } from 'src/adapter/driver/dtos/doctor.dto';
+import { Doctor } from 'src/core/domain/entities/doctor.model';
+import { DoctorUseCase } from 'src/core/application/use-cases/doctor/doctor.use-case';
 
 @ApiTags('Doctor')
 @Controller('doctors')

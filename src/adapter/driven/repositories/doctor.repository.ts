@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { MySqlGenericRepository } from "../external/mysql-generic-repository";
-import { Doctor } from "../entities/doctor.model";
+import { MySqlGenericRepository } from "./mysql-generic-repository";
+import { Doctor } from "../../../core/domain/entities/doctor.model";
 
 @Injectable()
 export class DoctorRepositoryImpl extends MySqlGenericRepository<Doctor> {

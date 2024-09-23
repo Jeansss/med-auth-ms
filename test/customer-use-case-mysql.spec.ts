@@ -1,7 +1,7 @@
 import { CustomerFactoryService } from "src/use-cases/patient/customer-factory.service";
-import { CustomerUseCases } from "src/use-cases/patient/patient.use-case";
+import { CustomerUseCases } from "src/core/application/use-cases/patient/patient.use-case";
 import { Test, TestingModule } from '@nestjs/testing';
-import { IDataServices } from "src/core/abstracts/data-services.abstract";
+import { IDataServices } from "src/core/domain/repositories/data-services.abstract";
 import { Customer } from "src/frameworks/data-services/mysql/entities/customer.model";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { CustomerDTO } from "src/dto/customer.dto";

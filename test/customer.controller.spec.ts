@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CustomerUseCases } from 'src/use-cases/patient/patient.use-case';
+import { CustomerUseCases } from 'src/core/application/use-cases/patient/patient.use-case';
 import { CustomerDTO } from 'src/dto/customer.dto';
 import { Customer } from 'src/frameworks/data-services/mongo/entities/customer.model';
 import { CustomerController } from 'src/controllers/patient/customer.controller';

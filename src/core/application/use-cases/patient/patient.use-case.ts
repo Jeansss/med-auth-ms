@@ -1,11 +1,10 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { IDataServices } from "src/core/abstracts/data-services.abstract";
-import { Patient } from "src/frameworks/data-services/mysql/entities/patient.model";
-import { PatientDTO } from "src/dto/patient.dto";
+import { IDataServices } from "src/core/domain/repositories/data-services.abstract";
+import { Patient } from "src/core/domain/entities/patient.model";
+import { PatientDTO } from "src/adapter/driver/dtos/patient.dto";
 import { PatientFactoryService } from "./patient-factory.service";
-import { PatientStatus } from "src/enum/patient.enum";
-import { MySqlGenericRepository } from "src/frameworks/data-services/mysql/external/mysql-generic-repository";
-import { PatientRepositoryImpl } from "src/frameworks/data-services/mysql/gateways/patient.repository";
+import { PatientRepositoryImpl } from "src/adapter/driven/repositories/patient.repository";
+import { PatientStatus } from "../../../domain/enums/patient.enum";
 
 @Injectable()
 export class PatientUseCase {

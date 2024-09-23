@@ -1,10 +1,10 @@
 import { Controller, Post, UseGuards, Request, Body, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LoginDto } from 'src/dto/login.dto';
+import { AuthUseCase } from '../../../../core/application/use-cases/auth/auth.use-case';
+import { LoginDto } from 'src/adapter/driver/dtos/login.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthUseCase) {}
 
   @Post('login')
   async login(@Body() loginDto: LoginDto) {

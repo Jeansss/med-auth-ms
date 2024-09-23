@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { DataServicesModule } from "src/services/data-services.module";
 import { DoctorFactoryService } from "./doctor-factory.service";
 import { DoctorUseCase } from "./doctor.use-case";
+import { DataServicesModule } from "src/adapter/driven/database/data-services.module";
 
 @Module({
     imports: [DataServicesModule],

@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { IDataServices } from "src/core/abstracts/data-services.abstract";
+import { IDataServices } from "src/core/domain/repositories/data-services.abstract";
 import { DoctorFactoryService } from "./doctor-factory.service";
-import { Doctor } from "src/frameworks/data-services/mysql/entities/doctor.model";
-import { DoctorDTO } from "src/dto/doctor.dto";
-import { DoctorRepositoryImpl } from "src/frameworks/data-services/mysql/gateways/doctor.repository";
+import { Doctor } from "src/core/domain/entities/doctor.model";
+import { DoctorDTO } from "src/adapter/driver/dtos/doctor.dto";
+import { DoctorRepositoryImpl } from "src/adapter/driven/repositories/doctor.repository";
 
 @Injectable()
 export class DoctorUseCase {

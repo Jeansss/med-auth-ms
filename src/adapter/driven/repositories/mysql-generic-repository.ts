@@ -1,4 +1,4 @@
-import { IGenericRepository } from 'src/core/abstracts/generic-repository.abstract';
+import { IGenericRepository } from 'src/core/domain/repositories/generic-repository.abstract';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 

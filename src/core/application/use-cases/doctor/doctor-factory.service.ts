@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { DoctorDTO } from "src/dto/doctor.dto";
-import { Doctor } from "src/frameworks/data-services/mysql/entities/doctor.model";
+import { DoctorDTO } from "src/adapter/driver/dtos/doctor.dto";
+import { Doctor } from "src/core/domain/entities/doctor.model";
 import * as bcrypt from 'bcrypt';
 
 @Injectable()

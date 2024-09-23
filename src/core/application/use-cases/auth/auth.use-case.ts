@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { IDataServices } from 'src/core/abstracts/data-services.abstract';
-import { Patient } from 'src/frameworks/data-services/mysql/entities/patient.model';
-import { MySqlGenericRepository } from 'src/frameworks/data-services/mysql/external/mysql-generic-repository';
-
+import { IDataServices } from 'src/core/domain/repositories/data-services.abstract';
+import { Patient } from 'src/core/domain/entities/patient.model';
 import * as bcrypt from 'bcrypt';
+import { MySqlGenericRepository } from 'src/adapter/driven/repositories/mysql-generic-repository';
 
 
 @Injectable()
-export class AuthService {
+export class AuthUseCase {
   constructor(
     private dataServices: IDataServices<MySqlGenericRepository<Patient>>,
     private jwtService: JwtService,

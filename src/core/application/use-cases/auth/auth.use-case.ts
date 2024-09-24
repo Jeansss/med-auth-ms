@@ -19,7 +19,7 @@ export class AuthUseCase {
     );
 
     if (user && await bcrypt.compare(password, user.password)) {
-      return { id: user.id, username: user.email, role: 'patient' };
+      return { id: user.id, username: user.email, role: 'patient', name: user.name };
     }
 
     user = await this.dataServices.doctors.getAll().then((doctors) =>
@@ -27,14 +27,14 @@ export class AuthUseCase {
     );
 
     if (user && await bcrypt.compare(password, user.password)) {
-      return { id: user.id, username: user.email, role: 'doctor' };
+      return { id: user.id, username: user.email, role: 'doctor', name: user.name };
     }
 
     return null;
   }
 
   async login(user: any) {
-    const payload = { username: user.email, sub: user.id, role: user.role };
+    const payload = { username: user.email, sub: user.id, role: user.role, name: user.name };
     return {
       access_token: this.jwtService.sign(payload),
     };

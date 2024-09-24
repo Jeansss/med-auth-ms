@@ -84,10 +84,12 @@
       "src/**/*.{ts,tsx}",
       "!src/main.ts",
       "!src/**/*.module.ts",
-      "!src/controllers/app.controller.ts",
-      "!src/core/abstracts/generic-repository.abstract.ts",
-      "!src/frameworks/data-services/mongo/mongo-data-services.service.ts",
-      "!src/use-cases/customer/customer-factory.service.ts"
+      "!src/adapter/driver/controllers/app.controller.ts",
+      "!src/adapter/driven/repositories/mysql-generic-repository.ts",
+      "!src/adapter/driven/repositories/mysql-data-services.service.ts",
+      "!src/adapter/driver/auth/*.ts",
+      "!src/core/application/use-cases/doctor/doctor-factory.service.ts",
+      "!src/core/application/use-cases/patient/patient-factory.service.ts"
     ],
     "coverageDirectory": "./coverage",
     "collectCoverage": true,

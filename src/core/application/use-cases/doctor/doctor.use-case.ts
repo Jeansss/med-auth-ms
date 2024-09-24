@@ -26,7 +26,7 @@ export class DoctorUseCase {
 
     async getDoctorByName(name: string): Promise<Doctor> {
         const foundDoctor = await this.dataServices.doctors.getDoctorByName(name);
-        if (foundDoctor != null) {
+        if (foundDoctor[0] != null) {
             return foundDoctor[0];
         } else {
             throw new NotFoundException(`Doctor with name: ${name} not found at database.`);

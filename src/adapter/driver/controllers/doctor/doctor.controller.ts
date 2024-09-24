@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put, Delete, HttpStatus, HttpCode, Logger, Query, NotFoundException, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/adapter/driver/auth/decorator-roles';
 import { JwtAuthGuard } from 'src/adapter/driver/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/adapter/driver/auth/roles-guard';
@@ -29,14 +29,14 @@ export class DoctorController {
         return await this.doctorUseCases.createDoctor(doctor);
     }
 
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('doctor')
+    @ApiExcludeEndpoint()
     @Get('/id/:doctorId')
     async getDoctorById(@Param('doctorId') doctorId: string): Promise<Doctor> {
         this.logger.log(`getDoctorById(string) - Start`);
         return await this.doctorUseCases.getDoctorById(doctorId);
     }
 
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('patient')
     @Get('/name/:name')

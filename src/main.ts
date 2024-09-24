@@ -9,14 +9,15 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-    transform: true,
-    whitelist: true,
-    forbidNonWhitelisted: true,
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
     }),
   )
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Order Manager API')
     .setDescription('This is the API from our FIAP Tech Challenge')
     .setVersion('1.0')

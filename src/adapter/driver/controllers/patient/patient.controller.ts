@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put, Delete, HttpStatus, HttpCode, Logger, Query, NotFoundException, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/adapter/driver/auth/decorator-roles';
 import { JwtAuthGuard } from 'src/adapter/driver/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/adapter/driver/auth/roles-guard';
@@ -29,6 +29,7 @@ export class PatientController {
         return await this.patientUseCases.createPatient(patient);
     }
 
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('doctor')
     @Get('/id/:patientId')
@@ -37,6 +38,7 @@ export class PatientController {
         return await this.patientUseCases.getPatientById(patientId);
     }
 
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('patient')
     @Post('/id/:patientId/terminate')

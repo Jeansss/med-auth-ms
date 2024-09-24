@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: customer-ms
+  name: med-auth-ms
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: customer-ms
+      app: med-auth-ms
   template:
     metadata:
       labels:
-        app: customer-ms
+        app: med-auth-ms
     spec:
       containers:
-      - name: customer-ms
-        image: 975050002971.dkr.ecr.us-east-1.amazonaws.com/customer-ms:latest
+      - name: med-auth-ms
+        image: 975050002971.dkr.ecr.us-east-1.amazonaws.com/med-auth-ms:latest
         ports:
         - containerPort: 3004
         livenessProbe:
@@ -31,42 +31,17 @@ spec:
         resources:
           requests:
             cpu: 10m
-        imagePullPolicy: Always
-        # env:
-        #   - name: MYSQL_HOST
-        #     valueFrom:
-        #       configMapKeyRef:
-        #         name: customer-ms-config
-        #         key: MYSQL_HOST
-        #   - name: MYSQL_PORT
-        #     valueFrom:
-        #       configMapKeyRef:
-        #         name: customer-ms-config
-        #         key: MYSQL_PORT
-        #   - name: MYSQL_DB
-        #     valueFrom:
-        #       configMapKeyRef:
-        #         name: customer-ms-config
-        #         key: MYSQL_DB
-        #   - name: MYSQL_USER
-        #     valueFrom:
-        #       configMapKeyRef:
-        #         name: customer-ms-config
-        #         key: MYSQL_USER
-        #   - name: MYSQL_PASSWORD
-        #     valueFrom:
-        #       configMapKeyRef:
-        #         name: customer-ms-config
-        #         key: MYSQL_PASSWORD
+        imagePullPolicy: Always        
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-customer-ms
+  name: svc-med-auth-ms
 spec:
   type: LoadBalancer
   selector:
-    app: customer-ms
+    app: med-auth-ms
   ports:
     - protocol: TCP
       port: 80

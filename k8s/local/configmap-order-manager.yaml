@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: order-manager-config
-data:
-  MONGO_CONNECTION_STRING: mongodb://svc-mongo:27017/order-manager

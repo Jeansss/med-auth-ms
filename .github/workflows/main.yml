@@ -90,10 +90,11 @@ jobs:
         MYSQL_DB: ${{ secrets.MYSQL_DB }}
         MYSQL_USER: ${{ secrets.MYSQL_USER }}
         MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}        
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        DB_NAME: users
         #IMAGE_TAG: ${{ steps.commit.outputs.short }}
       run: |
         kubectl apply -f k8s/cloud/
-        kubectl set env deployment/med-auth-ms MYSQL_HOST=$MYSQL_HOST MYSQL_PORT=$MYSQL_PORT MYSQL_DB=$MYSQL_DB MYSQL_USER=$MYSQL_USER MYSQL_PASSWORD=$MYSQL_PASSWORD
+        kubectl set env deployment/med-auth-ms MYSQL_HOST=$MYSQL_HOST MYSQL_PORT=$MYSQL_PORT MYSQL_DB=$MYSQL_DB MYSQL_USER=$MYSQL_USER MYSQL_PASSWORD=$MYSQL_PASSWORD DB_NAME=$DB_NAME
         #sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s/cloud/deployment.yml && \
         # cat k8s/cloud/configmap.yml

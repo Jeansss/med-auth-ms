@@ -4,28 +4,32 @@ import { Patient } from 'src/core/domain/entities/patient.model';
 import { PatientDTO } from 'src/adapter/driver/dtos/patient.dto';
 import { NotFoundException } from '@nestjs/common';
 import { PatientController } from 'src/adapter/driver/controllers/patient/patient.controller';
+import { IPatientUseCase } from 'src/core/application/use-cases/patient/patient.use-case.interface';
 
-const mockPatientUseCase = (): jest.Mocked<PatientUseCase> => ({
+const mockPatientUseCase = (): jest.Mocked<IPatientUseCase> => ({
   getAllPatients: jest.fn(),
   getPatientById: jest.fn(),
   createPatient: jest.fn(),
   terminatePatient: jest.fn(),
-} as unknown as jest.Mocked<PatientUseCase>);
+} as jest.Mocked<IPatientUseCase>);
 
 describe('PatientController', () => {
   let patientController: PatientController;
-  let patientUseCase: jest.Mocked<PatientUseCase>;
+  let patientUseCase: jest.Mocked<IPatientUseCase>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PatientController],
       providers: [
-        { provide: PatientUseCase, useValue: mockPatientUseCase() },
+        {
+          provide: 'IPatientUseCase',
+          useValue: mockPatientUseCase(),
+        },
       ],
     }).compile();
 
     patientController = module.get<PatientController>(PatientController);
-    patientUseCase = module.get<jest.Mocked<PatientUseCase>>(PatientUseCase);
+    patientUseCase = module.get<jest.Mocked<IPatientUseCase>>('IPatientUseCase');
   });
 
   it('should be defined', () => {
@@ -52,8 +56,8 @@ describe('PatientController', () => {
     it('should create a new patient and return the patient object', async () => {
       const patientDTO: PatientDTO = {
         name: 'Patient 1', email: 'patient1@example.com',
-        cpf: '',
-        password: ''
+        cpf: '12345678900',
+        password: 'password'
       };
       const createdPatient: Patient = { id: '1', ...patientDTO } as unknown as Patient;
 
@@ -82,9 +86,10 @@ describe('PatientController', () => {
 
       try {
         await patientController.getPatientById('999');
-      } catch (error) {
+      }catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
       }
+
 
       expect(patientUseCase.getPatientById).toHaveBeenCalledWith('999');
     });
@@ -105,11 +110,11 @@ describe('PatientController', () => {
 
       try {
         await patientController.terminatePatient(patientId);
-      } catch (error) {
+      }catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
       }
-
       expect(patientUseCase.terminatePatient).toHaveBeenCalledWith(patientId);
     });
   });
 });
+

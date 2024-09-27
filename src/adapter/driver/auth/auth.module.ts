@@ -14,7 +14,15 @@ import { MySqlDataServicesModule } from 'src/adapter/driven/database/mysql-data-
     }),
     MySqlDataServicesModule,
   ],
-  providers: [AuthUseCase, JwtStrategy],
-  exports: [AuthUseCase],
+  providers: [
+    JwtStrategy,
+    {
+      provide: 'IAuthUseCase',
+      useClass: AuthUseCase,
+    },
+  ],
+  exports: [
+    'IAuthUseCase',
+  ],
 })
 export class AuthModule {}

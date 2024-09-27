@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Delete, HttpStatus, HttpCode, Logger, Query, NotFoundException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Delete, HttpStatus, HttpCode, Logger, Query, NotFoundException, UseGuards, Inject } from '@nestjs/common';
 import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/adapter/driver/auth/decorator-roles';
 import { JwtAuthGuard } from 'src/adapter/driver/auth/jwt-auth.guard';
@@ -6,6 +6,7 @@ import { RolesGuard } from 'src/adapter/driver/auth/roles-guard';
 import { DoctorDTO } from 'src/adapter/driver/dtos/doctor.dto';
 import { Doctor } from 'src/core/domain/entities/doctor.model';
 import { DoctorUseCase } from 'src/core/application/use-cases/doctor/doctor.use-case';
+import { IDoctorUseCase } from 'src/core/application/use-cases/doctor/doctor.use-case.interface';
 
 @ApiTags('Doctor')
 @Controller('doctors')
@@ -13,7 +14,7 @@ export class DoctorController {
 
     private readonly logger = new Logger(DoctorController.name);
 
-    constructor(private doctorUseCases: DoctorUseCase) {
+    constructor(@Inject('IDoctorUseCase') private doctorUseCases: IDoctorUseCase) {
 
     }
 
@@ -39,9 +40,9 @@ export class DoctorController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('patient')
-    @Get('/name/:name')
-    async getDoctorByName(@Param('name') name: string): Promise<Doctor> {
-        this.logger.log(`getDoctorByName(string) - Start`);
-        return await this.doctorUseCases.getDoctorByName(name);
+    @Get('/specialty/:specialty')
+    async getDoctorBySpecialty(@Param('specialty') specialty: string): Promise<Doctor[]> {
+        this.logger.log(`getDoctorBySpecialty(string) - Start`);
+        return await this.doctorUseCases.getDoctorBySpecialty(specialty);
     }
 }

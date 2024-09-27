@@ -27,8 +27,8 @@ describe('DoctorRepositoryImpl', () => {
       ],
     }).compile();
 
-    doctorRepository = new DoctorRepositoryImpl(module.get(getRepositoryToken(Doctor))); // Instanciar manualmente com o mock do repositório
-    repositoryMock = module.get(getRepositoryToken(Doctor)); // Obter o mock do repositório
+    doctorRepository = new DoctorRepositoryImpl(module.get(getRepositoryToken(Doctor)));
+    repositoryMock = module.get(getRepositoryToken(Doctor));
   });
 
   it('should be defined', () => {
@@ -49,25 +49,25 @@ describe('DoctorRepositoryImpl', () => {
 
   describe('getDoctorByName', () => {
     it('should return the doctor with the specified name', async () => {
-      const doctor = { id: 1, name: 'Dr. Mario', email: 'test@doctor.com', cpf: '12345678999', password: 'test123456', specialty: 'clinico', role: 'doctor' } as Doctor;
+      const doctor = { id: 1, name: 'Dr. Mario', email: '', cpf: '', password: '', specialty: '', role: '' } as Doctor;
       repositoryMock.find.mockResolvedValue([doctor]);
-
-      const result = await doctorRepository.getDoctorByName('Dr. Mario');
+      
+      const result = await doctorRepository.getDoctorBySpecialty('clinico');
 
       expect(result).toEqual([doctor]);
       expect(repositoryMock.find).toHaveBeenCalledWith({
-        where: { name: 'Dr. Mario' },
+        where: { specialty: 'clinico' },
       });
     });
 
     it('should return an empty array if no doctor is found with the specified name', async () => {
       repositoryMock.find.mockResolvedValue([]);
 
-      const result = await doctorRepository.getDoctorByName('Nonexistent Doctor');
+      const result = await doctorRepository.getDoctorBySpecialty('nonexistent');
 
       expect(result).toEqual([]);
       expect(repositoryMock.find).toHaveBeenCalledWith({
-        where: { name: 'Nonexistent Doctor' },
+        where: { specialty: 'nonexistent' },
       });
     });
   });

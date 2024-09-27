@@ -4,28 +4,32 @@ import { Doctor } from 'src/core/domain/entities/doctor.model';
 import { DoctorDTO } from 'src/adapter/driver/dtos/doctor.dto';
 import { NotFoundException } from '@nestjs/common';
 import { DoctorController } from 'src/adapter/driver/controllers/doctor/doctor.controller';
+import { IDoctorUseCase } from 'src/core/application/use-cases/doctor/doctor.use-case.interface';
 
-const mockDoctorUseCase = (): jest.Mocked<DoctorUseCase> => ({
+const mockDoctorUseCase = (): jest.Mocked<IDoctorUseCase> => ({
   getAllDoctors: jest.fn(),
   getDoctorById: jest.fn(),
-  getDoctorByName: jest.fn(),
+  getDoctorBySpecialty: jest.fn(),
   createDoctor: jest.fn(),
-} as unknown as jest.Mocked<DoctorUseCase>);
+} as jest.Mocked<IDoctorUseCase>);
 
 describe('DoctorController', () => {
   let doctorController: DoctorController;
-  let doctorUseCase: jest.Mocked<DoctorUseCase>;
+  let doctorUseCase: jest.Mocked<IDoctorUseCase>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [DoctorController],
       providers: [
-        { provide: DoctorUseCase, useValue: mockDoctorUseCase() },
+        {
+          provide: 'IDoctorUseCase',
+          useValue: mockDoctorUseCase(),
+        },
       ],
     }).compile();
 
     doctorController = module.get<DoctorController>(DoctorController);
-    doctorUseCase = module.get<jest.Mocked<DoctorUseCase>>(DoctorUseCase);
+    doctorUseCase = module.get<jest.Mocked<IDoctorUseCase>>('IDoctorUseCase');
   });
 
   it('should be defined', () => {
@@ -51,9 +55,12 @@ describe('DoctorController', () => {
   describe('createDoctor', () => {
     it('should create a new doctor and return the doctor object', async () => {
       const doctorDTO: DoctorDTO = {
-        name: 'Doctor 1', email: 'doctor1@example.com', specialty: 'Cardiology', crm: '12345',
-        cpf: '',
-        password: ''
+        name: 'Doctor 1', 
+        email: 'doctor1@example.com', 
+        specialty: 'Cardiology', 
+        crm: '12345',
+        cpf: '12345678900',
+        password: 'password'
       };
       const createdDoctor: Doctor = { id: '1', ...doctorDTO } as unknown as Doctor;
 
@@ -81,7 +88,7 @@ describe('DoctorController', () => {
       doctorUseCase.getDoctorById.mockResolvedValue(null);
 
       try {
-        await doctorController.getDoctorById('999');
+        await doctorController.getDoctorById('999')
       } catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
       }
@@ -90,27 +97,30 @@ describe('DoctorController', () => {
     });
   });
 
-  describe('getDoctorByName', () => {
-    it('should return the doctor with the specified name', async () => {
-      const doctor = { id: '1', name: 'Doctor 1', email: 'doctor1@example.com' } as unknown as Doctor;
-      doctorUseCase.getDoctorByName.mockResolvedValue(doctor);
+  describe('getDoctorBySpecialty', () => {
+    it('should return all doctors with the specified specialty', async () => {
+      const doctors: Doctor[] = [
+        { id: '1', name: 'Doctor 1', email: '', specialty: 'Cardiology' } as unknown as Doctor,
+        { id: '2', name: 'Doctor 2', email: '', specialty: 'Oncology' } as unknown as Doctor,
+      ];
 
-      const result = await doctorController.getDoctorByName('Doctor 1');
+      doctorUseCase.getDoctorBySpecialty.mockResolvedValue([doctors[0]]);
 
-      expect(result).toEqual(doctor);
-      expect(doctorUseCase.getDoctorByName).toHaveBeenCalledWith('Doctor 1');
+      const result = await doctorController.getDoctorBySpecialty('Cardiology');
+
+      expect(result).toEqual([doctors[0]]);
+      expect(doctorUseCase.getDoctorBySpecialty).toHaveBeenCalledWith('Cardiology');
     });
 
-    it('should throw a NotFoundException if the doctor with the specified name is not found', async () => {
-      doctorUseCase.getDoctorByName.mockResolvedValue(null);
+    it('should throw a NotFoundException if no doctors with the specified specialty exist', async () => {
+      doctorUseCase.getDoctorBySpecialty.mockResolvedValue([]);
 
       try {
-        await doctorController.getDoctorByName('Unknown Doctor');
+        await doctorController.getDoctorBySpecialty('Cardiology');
       } catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
       }
-
-      expect(doctorUseCase.getDoctorByName).toHaveBeenCalledWith('Unknown Doctor');
+      expect(doctorUseCase.getDoctorBySpecialty).toHaveBeenCalledWith('Cardiology');
     });
   });
 });

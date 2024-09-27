@@ -9,12 +9,20 @@ import { MySqlDataServicesModule } from 'src/adapter/driven/database/mysql-data-
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: 'SECRET_KEY',
+      secret: process.env.MS_SECRET_KEY,
       signOptions: { expiresIn: '60m' },
     }),
     MySqlDataServicesModule,
   ],
-  providers: [AuthUseCase, JwtStrategy],
-  exports: [AuthUseCase],
+  providers: [
+    JwtStrategy,
+    {
+      provide: 'IAuthUseCase',
+      useClass: AuthUseCase,
+    },
+  ],
+  exports: [
+    'IAuthUseCase',
+  ],
 })
 export class AuthModule {}

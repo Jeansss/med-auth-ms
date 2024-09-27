@@ -4,10 +4,11 @@ import { IDataServices } from 'src/core/domain/repositories/data-services.abstra
 import { Patient } from 'src/core/domain/entities/patient.model';
 import * as bcrypt from 'bcrypt';
 import { MySqlGenericRepository } from 'src/adapter/driven/repositories/mysql-generic-repository';
+import { IAuthUseCase } from './auth.use-case.interface';
 
 
 @Injectable()
-export class AuthUseCase {
+export class AuthUseCase implements IAuthUseCase {
   constructor(
     private dataServices: IDataServices<MySqlGenericRepository<Patient>>,
     private jwtService: JwtService,
@@ -33,7 +34,7 @@ export class AuthUseCase {
     return null;
   }
 
-  async login(user: any) {
+  async login(user: any): Promise<any> {
     const payload = { username: user.email, sub: user.id, role: user.role, name: user.name };
     return {
       access_token: this.jwtService.sign(payload),

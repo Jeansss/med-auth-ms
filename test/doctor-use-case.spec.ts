@@ -11,7 +11,7 @@ const mockDataServices = () => ({
     getAll: jest.fn(),
     get: jest.fn(),
     create: jest.fn(),
-    getDoctorByName: jest.fn(),
+    getDoctorBySpecialty: jest.fn(),
   },
 });
 
@@ -76,24 +76,32 @@ describe('DoctorUseCase', () => {
     });
   });
 
-  describe('getDoctorByName', () => {
-    it('should return the doctor with the specified name', async () => {
-      const doctor = { id: '1', name: 'Doctor 1', email: 'doctor1@example.com' } as unknown as Doctor;
-      dataServicesMock.doctors.getDoctorByName.mockResolvedValue([doctor]);
+  describe('getDoctoBySpecialty', () => {
+    it('should return all doctors with the specified specialty', async () => {
+      const doctors: Doctor[] = [
+        { id: '1', name: 'Doctor 1', email: '', specialty: 'Cardiologia' } as unknown as Doctor,
+        { id: '2', name: 'Doctor 2', email: '', specialty: 'Oncologia' } as unknown as Doctor,
+      ];
+      dataServicesMock.doctors.getDoctorBySpecialty.mockResolvedValue(doctors);
 
-      const result = await doctorUseCase.getDoctorByName('Doctor 1');
-
-      expect(result).toEqual(doctor);
-      expect(dataServicesMock.doctors.getDoctorByName).toHaveBeenCalledWith('Doctor 1');
+      const result = await doctorUseCase.getDoctorBySpecialty('Cardiologia');
+      
+      expect(result).toEqual(doctors);
+      expect(dataServicesMock.doctors.getDoctorBySpecialty).toHaveBeenCalledWith('Cardiologia');
     });
 
-    it('should throw a NotFoundException if the doctor with the specified name does not exist', async () => {
-      dataServicesMock.doctors.getDoctorByName.mockResolvedValue([]);
+    it('should return an empty array if no doctors with the specified specialty exist', async () => {
+      dataServicesMock.doctors.getDoctorBySpecialty.mockResolvedValue([]);
 
-      await expect(doctorUseCase.getDoctorByName('Nonexistent Doctor')).rejects.toThrow(NotFoundException);
-      expect(dataServicesMock.doctors.getDoctorByName).toHaveBeenCalledWith('Nonexistent Doctor');
+      try {
+        await doctorUseCase.getDoctorBySpecialty('Cardiologia');
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+      }
+      expect(dataServicesMock.doctors.getDoctorBySpecialty).toHaveBeenCalledWith('Cardiologia');
     });
   });
+
 
   describe('createDoctor', () => {
     it('should create a new doctor and return the created doctor', async () => {

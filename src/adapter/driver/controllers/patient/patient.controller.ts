@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Delete, HttpStatus, HttpCode, Logger, Query, NotFoundException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Delete, HttpStatus, HttpCode, Logger, Query, NotFoundException, UseGuards, Inject } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/adapter/driver/auth/decorator-roles';
 import { JwtAuthGuard } from 'src/adapter/driver/auth/jwt-auth.guard';
@@ -6,6 +6,7 @@ import { RolesGuard } from 'src/adapter/driver/auth/roles-guard';
 import { PatientDTO } from 'src/adapter/driver/dtos/patient.dto';
 import { Patient } from 'src/core/domain/entities/patient.model';
 import { PatientUseCase } from 'src/core/application/use-cases/patient/patient.use-case';
+import { IPatientUseCase } from 'src/core/application/use-cases/patient/patient.use-case.interface';
 
 @ApiTags('Patient')
 @Controller('patients')
@@ -13,9 +14,10 @@ export class PatientController {
 
     private readonly logger = new Logger(PatientController.name);
 
-    constructor(private patientUseCases: PatientUseCase) {
-
-    }
+    constructor(
+        @Inject('IPatientUseCase')
+        private patientUseCases: IPatientUseCase
+    ) {}
 
     @Get()
     async getAllPatients(): Promise<Patient[]> {

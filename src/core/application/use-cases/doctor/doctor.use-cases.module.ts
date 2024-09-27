@@ -7,11 +7,14 @@ import { DataServicesModule } from "src/adapter/driven/database/data-services.mo
     imports: [DataServicesModule],
     providers: [
         DoctorFactoryService,
-        DoctorUseCase,
-    ],
-    exports: [
+        {
+          provide: 'IDoctorUseCase',
+          useClass: DoctorUseCase,
+        },
+      ],
+      exports: [
         DoctorFactoryService,
-        DoctorUseCase,
-    ]
-})
+        'IDoctorUseCase',
+      ],
+    })
 export class DoctorUseCaseModule { }

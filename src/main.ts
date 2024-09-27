@@ -18,10 +18,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .addBearerAuth()
-    .setTitle('Order Manager API')
-    .setDescription('This is the API from our FIAP Tech Challenge')
+    .setTitle('Med Auth Api')
+    .setDescription('Hackathon Fiap')
     .setVersion('1.0')
-    //.addTag('Order-Manager')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

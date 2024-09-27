@@ -5,11 +5,11 @@ import { Doctor } from "../../../core/domain/entities/doctor.model";
 @Injectable()
 export class DoctorRepositoryImpl extends MySqlGenericRepository<Doctor> {
 
-    getDoctorByName(doctorName: string) {
+    getDoctorBySpecialty(doctorSpecialty: string) {
         return this._repository
             .find({
                 where: {
-                    name: doctorName
+                    specialty: doctorSpecialty
                 }
             });
     }
